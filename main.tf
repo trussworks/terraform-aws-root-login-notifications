@@ -9,8 +9,10 @@
  * ## Usage
  *
  * ```hcl
- * module "root_login_notifications" {
- *   source = "../../modules/aws-root-login-notifications"
+ *
+ * module "root-login-notifications" {
+ *   source  = "trussworks/root-login-notifications/aws"
+ *   version = "1.0.0"
  *
  *   sns_topic_name = "slack-events"
  * }
