@@ -27,6 +27,75 @@ data "aws_sns_topic" "main" {
   name = "${var.sns_topic_name}"
 }
 
+data "aws_caller_identity" "current" {}
+
+resource "aws_sns_topic_policy" "default" {
+  arn = data.aws_sns_topic.main.arn
+  policy = data.aws_iam_policy_document.sns_topic_policy_with_events.json
+  count = var.enforce_sns_policy ? 1 : 0
+}
+
+data "aws_iam_policy_document" "sns_topic_policy_with_events" {
+  policy_id = "PolicyId"
+
+  statement {
+    actions = [
+      "SNS:Publish",
+    ]
+
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["events.amazonaws.com"]
+    }
+
+    resources = [
+      data.aws_sns_topic.main.arn
+    ]
+
+    sid = "CloudWatchEvents"
+  }
+
+  statement {
+    actions = [
+      "SNS:Subscribe",
+      "SNS:SetTopicAttributes",
+      "SNS:RemovePermission",
+      "SNS:Receive",
+      "SNS:Publish",
+      "SNS:ListSubscriptionsByTopic",
+      "SNS:GetTopicAttributes",
+      "SNS:DeleteTopic",
+      "SNS:AddPermission",
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceOwner"
+
+      values = [
+        data.aws_caller_identity.current.account_id
+      ]
+    }
+
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    resources = [
+      data.aws_sns_topic.main.arn
+    ]
+
+    sid = "SlackAlertDefaultPolicy"
+  }
+
+}
+
+
 #
 # CloudWatch Event
 #
