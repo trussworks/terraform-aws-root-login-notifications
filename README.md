@@ -1,4 +1,3 @@
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 Enables notifications to an SNS topic when someone successfully logs in using the root account via the AWS Console.
 
 Creates the following resources:
@@ -18,6 +17,7 @@ module "root-login-notifications" {
 }
 ```
 
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
 | Name | Description | Type | Default | Required |
