@@ -8,3 +8,9 @@ variable "send_sns" {
   default     = false
   description = "If true will send message *Successful AWS console login with the root account* to SNS topic"
 }
+
+variable "alarm_suffix" {
+  type        = string
+  default     = ""
+  description = "Suffix to add to alarm name, used for separating different AWS account."
+}

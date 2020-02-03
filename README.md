@@ -23,6 +23,7 @@ module "root-login-notifications" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| alarm\_suffix | Suffix to add to alarm name, used for separating different AWS account. | string | `""` | no |
 | send\_sns | If true will send message \*Successful AWS console login with the root account\* to SNS topic | bool | `"false"` | no |
 | sns\_topic\_name | The name of the SNS topic to send root login notifications. | string | n/a | yes |
 
