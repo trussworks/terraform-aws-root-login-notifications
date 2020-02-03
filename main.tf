@@ -49,7 +49,7 @@ resource "aws_cloudwatch_event_target" "main" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "alarm_cwe_triggered" {
-  alarm_name          = "iam-root-login-alarm"
+  alarm_name          = var.alarm_suffix == "" ? "iam-root-login-alarm" : "iam-root-login-alarm-${var.alarm_suffix}"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   datapoints_to_alarm = "1"
