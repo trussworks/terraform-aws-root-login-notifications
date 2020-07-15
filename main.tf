@@ -34,7 +34,7 @@ data "aws_sns_topic" "main" {
 resource "aws_cloudwatch_event_rule" "main" {
   name          = "iam-root-login"
   description   = "Successful login with root account"
-  event_pattern = file("${path.module}/event-pattern.json")
+  event_pattern = var.govcloud_check ? file("${path.module}/govcloud-event-pattern.json") : file("${path.module}/event-pattern.json")
 }
 
 resource "aws_cloudwatch_event_target" "main" {
