@@ -6,7 +6,7 @@ variable "alarm_suffix" {
 
 variable "govcloud_check" {
   type        = bool
-  default = false
+  default     = false
   description = "If true, event pattern seeks an Administrator user, which is the GovCloud equivalent to root user."
 }
 

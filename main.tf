@@ -1,10 +1,11 @@
 /**
- * Enables notifications to an SNS topic when someone successfully logs in using the root account via the AWS Console.
+ * Enables notifications to an SNS topic when someone successfully logs in using the root account via the AWS Console in commercial AWS or using the Administrator user in AWS GovCloud.
  *
  * Creates the following resources:
  *
- * * CloudWatch event rule to filter for console logins with the root account.
- * * CloudWatch event target to send notifications to an SNS topic.
+ * * CloudWatch event rule to filter for console logins with the root account or Administrator user.
+ * * CloudWatch metric to trigger CW event when console rule is triggered
+ * * CloudWatch event target to send notifications to an SNS topic.(optional)
  *
  * ## Usage
  *
