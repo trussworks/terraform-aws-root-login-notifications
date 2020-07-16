@@ -4,12 +4,6 @@ variable "alarm_suffix" {
   description = "Suffix to add to alarm name, used for separating different AWS account."
 }
 
-variable "govcloud_check" {
-  type        = bool
-  default     = false
-  description = "If true, event pattern seeks an Administrator user, which is the GovCloud equivalent to root user."
-}
-
 variable "sns_topic_name" {
   type        = string
   description = "The name of the SNS topic to send root login notifications."

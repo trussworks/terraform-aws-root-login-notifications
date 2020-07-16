@@ -5,7 +5,7 @@ Creates the following resources:
 
 * CloudWatch event rule to filter for console logins with the root account or Administrator user.
 * CloudWatch metric to trigger CW event when console rule is triggered
-* CloudWatch event target to send notifications to an SNS topic.(optional)
+* CloudWatch event target to send notifications to an SNS topic (optional)
 
 ## Usage
 
@@ -36,7 +36,6 @@ module "root-login-notifications" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | alarm\_suffix | Suffix to add to alarm name, used for separating different AWS account. | `string` | `""` | no |
-| govcloud\_check | If true, event pattern seeks an Administrator user, which is the GovCloud equivalent to root user. | `bool` | `false` | no |
 | send\_sns | If true will send message *Successful AWS console login with the root account* to SNS topic | `bool` | `false` | no |
 | sns\_topic\_name | The name of the SNS topic to send root login notifications. | `string` | n/a | yes |
 
