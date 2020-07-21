@@ -13,7 +13,7 @@ Creates the following resources:
 
 module "root-login-notifications" {
   source  = "trussworks/root-login-notifications/aws"
-  version = "1.0.0"
+  version = "2.2.0"
 
   sns_topic_name = "slack-events"
 }

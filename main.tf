@@ -13,7 +13,7 @@
  *
  * module "root-login-notifications" {
  *   source  = "trussworks/root-login-notifications/aws"
- *   version = "1.0.0"
+ *   version = "2.2.0"
  *
  *   sns_topic_name = "slack-events"
  * }
@@ -22,6 +22,9 @@
 
 # The AWS partition (commercial or govcloud)
 data "aws_partition" "current" {
+}
+
+data "aws_caller_identity" "current" {
 }
 
 #
@@ -36,15 +39,55 @@ data "aws_sns_topic" "main" {
 # CloudWatch Event
 #
 
-resource "aws_cloudwatch_event_rule" "main" {
+resource "aws_cloudwatch_event_rule" "main-gov" {
+  count         = data.aws_partition.current.partition == "aws-us-gov" ? 1 : 0
   name          = "iam-root-login"
   description   = "Successful login with root account"
-  event_pattern = data.aws_partition.current.partition == "aws-us-gov" ? file("${path.module}/govcloud-event-pattern.json") : file("${path.module}/event-pattern.json")
+  event_pattern = <<PATTERN
+  {
+    "detail": {
+        "userIdentity": {
+            "arn": [
+                "arn:aws-us-gov:iam::${data.aws_caller_identity.current.account_id}:user/Administrator"
+            ],
+            "type": [
+                "IAMUser"
+            ]
+        },
+        "eventType": [
+            "AwsConsoleSignIn"
+        ]
+    },
+    "detail-type": [
+      "AWS Console Sign In via CloudTrail"
+    ]
+  }
+  PATTERN
+}
+
+resource "aws_cloudwatch_event_rule" "main-com" {
+  count         = data.aws_partition.current.partition == "aws" ? 1 : 0
+  name          = "iam-root-login"
+  description   = "Successful login with root account"
+  event_pattern = <<PATTERN
+  {
+    "detail": {
+      "userIdentity": {
+        "type": [
+          "Root"
+        ]
+      }
+    },
+    "detail-type": [
+      "AWS Console Sign In via CloudTrail"
+    ]
+  }
+  PATTERN
 }
 
 resource "aws_cloudwatch_event_target" "main" {
   count     = var.send_sns ? 1 : 0
-  rule      = aws_cloudwatch_event_rule.main.name
+  rule      = data.aws_partition.current.partition == "aws-us-gov" ? aws_cloudwatch_event_rule.main-gov[0].name : aws_cloudwatch_event_rule.main-com[0].name
   target_id = "send-to-sns"
   arn       = data.aws_sns_topic.main.arn
 
@@ -68,7 +111,7 @@ resource "aws_cloudwatch_metric_alarm" "alarm_cwe_triggered" {
   ok_actions          = [data.aws_sns_topic.main.arn]
 
   dimensions = {
-    RuleName = aws_cloudwatch_event_rule.main.name
+    RuleName = data.aws_partition.current.partition == "aws-us-gov" ? aws_cloudwatch_event_rule.main-gov[0].name : aws_cloudwatch_event_rule.main-com[0].name
   }
 }
 
