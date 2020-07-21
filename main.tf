@@ -39,7 +39,7 @@ data "aws_sns_topic" "main" {
 # CloudWatch Event
 #
 
-resource "aws_cloudwatch_event_rule" "main-gov" {
+resource "aws_cloudwatch_event_rule" "main_gov" {
   count         = data.aws_partition.current.partition == "aws-us-gov" ? 1 : 0
   name          = "iam-root-login"
   description   = "Successful login with root account"
@@ -65,7 +65,7 @@ resource "aws_cloudwatch_event_rule" "main-gov" {
   PATTERN
 }
 
-resource "aws_cloudwatch_event_rule" "main-com" {
+resource "aws_cloudwatch_event_rule" "main_com" {
   count         = data.aws_partition.current.partition == "aws" ? 1 : 0
   name          = "iam-root-login"
   description   = "Successful login with root account"
@@ -87,7 +87,7 @@ resource "aws_cloudwatch_event_rule" "main-com" {
 
 resource "aws_cloudwatch_event_target" "main" {
   count     = var.send_sns ? 1 : 0
-  rule      = data.aws_partition.current.partition == "aws-us-gov" ? aws_cloudwatch_event_rule.main-gov[0].name : aws_cloudwatch_event_rule.main-com[0].name
+  rule      = data.aws_partition.current.partition == "aws-us-gov" ? aws_cloudwatch_event_rule.main_gov[0].name : aws_cloudwatch_event_rule.main_com[0].name
   target_id = "send-to-sns"
   arn       = data.aws_sns_topic.main.arn
 
@@ -111,7 +111,7 @@ resource "aws_cloudwatch_metric_alarm" "alarm_cwe_triggered" {
   ok_actions          = [data.aws_sns_topic.main.arn]
 
   dimensions = {
-    RuleName = data.aws_partition.current.partition == "aws-us-gov" ? aws_cloudwatch_event_rule.main-gov[0].name : aws_cloudwatch_event_rule.main-com[0].name
+    RuleName = data.aws_partition.current.partition == "aws-us-gov" ? aws_cloudwatch_event_rule.main_gov[0].name : aws_cloudwatch_event_rule.main_com[0].name
   }
 }
 
