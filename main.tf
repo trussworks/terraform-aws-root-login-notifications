@@ -41,8 +41,8 @@ data "aws_sns_topic" "main" {
 
 resource "aws_cloudwatch_event_rule" "main_gov" {
   count         = data.aws_partition.current.partition == "aws-us-gov" ? 1 : 0
-  name          = "iam-root-login"
-  description   = "Successful login with root account"
+  name          = "iam-administrator-login"
+  description   = "Successful login with Administrator user"
   event_pattern = <<PATTERN
   {
     "detail": {
