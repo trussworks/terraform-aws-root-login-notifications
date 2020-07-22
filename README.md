@@ -1,10 +1,11 @@
-Enables notifications to an SNS topic when someone successfully logs in using the root account via the AWS Console.
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+Enables notifications to an SNS topic when someone successfully logs in using the root account via the AWS Console in commercial AWS or using the Administrator user in AWS GovCloud.
 
 Creates the following resources:
 
-* CloudWatch event rule to filter for console logins with the root account.
+* CloudWatch event rule to filter for console logins with the root account or Administrator user.
 * CloudWatch metric to trigger CW event when console rule is triggered
-* CloudWatch event target to send notifications to an SNS topic. (optional)
+* CloudWatch event target to send notifications to an SNS topic (optional)
 
 ## Usage
 
@@ -12,20 +13,35 @@ Creates the following resources:
 
 module "root-login-notifications" {
   source  = "trussworks/root-login-notifications/aws"
-  version = "1.0.0"
+  version = "2.2.0"
 
   sns_topic_name = "slack-events"
 }
 ```
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | >= 0.12 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| aws | n/a |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| alarm\_suffix | Suffix to add to alarm name, used for separating different AWS account. | string | `""` | no |
-| send\_sns | If true will send message \*Successful AWS console login with the root account\* to SNS topic | bool | `"false"` | no |
-| sns\_topic\_name | The name of the SNS topic to send root login notifications. | string | n/a | yes |
+|------|-------------|------|---------|:--------:|
+| alarm\_suffix | Suffix to add to alarm name, used for separating different AWS account. | `string` | `""` | no |
+| send\_sns | If true will send message *Successful AWS console login with the root account* to SNS topic | `bool` | `false` | no |
+| sns\_topic\_name | The name of the SNS topic to send root login notifications. | `string` | n/a | yes |
+
+## Outputs
+
+No output.
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
