@@ -23,14 +23,14 @@ module "root-login-notifications" {
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12.0 |
-| aws | ~> 2.70 |
+| terraform | >= 0.12.0 |
+| aws | >= 2.70.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | ~> 2.70 |
+| aws | >= 2.70.0 |
 
 ## Inputs
 
@@ -39,6 +39,7 @@ module "root-login-notifications" {
 | alarm\_suffix | Suffix to add to alarm name, used for separating different AWS account. | `string` | `""` | no |
 | send\_sns | If true will send message *Successful AWS console login with the root account* to SNS topic | `bool` | `false` | no |
 | sns\_topic\_name | The name of the SNS topic to send root login notifications. | `string` | n/a | yes |
+| template | Input template for CloudWatch event target. | `string` | `"\"Successful AWS Console login by root user for account \u003caccount\u003e in region \u003cregion\u003e at \u003ctime\u003e.\""` | no |
 
 ## Outputs
 
@@ -71,4 +72,3 @@ Use this method if wishing to have a dedicated SNS topic for PagerDuty alerts or
 1. In TF ensure that the PagerDuty endpoint provided is assigned/subscribed to the SNS topic. For more info see the AWS topic about the proper [policy](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/CWE_Troubleshooting.html#RuleTriggeredMoreThanOnce).
 1. Apply this module to the SNS topic with the `send_sns = true` and customizing the [input_template](https://github.com/trussworks/terraform-aws-root-login-notifications/blob/master/main.tf#L46) as needed.
 1. Test by logging in as root
-

@@ -92,7 +92,12 @@ resource "aws_cloudwatch_event_target" "main" {
   arn       = data.aws_sns_topic.main.arn
 
   input_transformer {
-    input_template = "\"Successful AWS console login with the root account.\""
+    input_paths = {
+      "account" = "$.account"
+      "region"  = "$.region"
+      "time"    = "$.time"
+    }
+    input_template = var.template
   }
 }
 
@@ -114,4 +119,3 @@ resource "aws_cloudwatch_metric_alarm" "alarm_cwe_triggered" {
     RuleName = data.aws_partition.current.partition == "aws-us-gov" ? aws_cloudwatch_event_rule.main_gov[0].name : aws_cloudwatch_event_rule.main_com[0].name
   }
 }
-
