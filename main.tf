@@ -114,4 +114,3 @@ resource "aws_cloudwatch_metric_alarm" "alarm_cwe_triggered" {
     RuleName = data.aws_partition.current.partition == "aws-us-gov" ? aws_cloudwatch_event_rule.main_gov[0].name : aws_cloudwatch_event_rule.main_com[0].name
   }
 }
-

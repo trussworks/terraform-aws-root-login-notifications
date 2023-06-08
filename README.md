@@ -71,4 +71,3 @@ Use this method if wishing to have a dedicated SNS topic for PagerDuty alerts or
 1. In TF ensure that the PagerDuty endpoint provided is assigned/subscribed to the SNS topic. For more info see the AWS topic about the proper [policy](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/CWE_Troubleshooting.html#RuleTriggeredMoreThanOnce).
 1. Apply this module to the SNS topic with the `send_sns = true` and customizing the [input_template](https://github.com/trussworks/terraform-aws-root-login-notifications/blob/master/main.tf#L46) as needed.
 1. Test by logging in as root
-
