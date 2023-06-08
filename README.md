@@ -44,7 +44,7 @@ module "root-login-notifications" {
 
 No output.
 
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
 
 
 
