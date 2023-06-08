@@ -1,4 +1,4 @@
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 Enables notifications to an SNS topic when someone successfully logs in using the root account via the AWS Console in commercial AWS or using the Administrator user in AWS GovCloud.
 
 Creates the following resources:
